@@ -1,0 +1,79 @@
+import java.awt.*;
+
+public class People {
+    boolean b = true;
+     int x;
+     int y;
+    int money;
+    public People(){
+        this.x = (int)(Math.random()*10);
+        this.y = (int)(Math.random()*10);
+        money = 10;
+    }
+    int zi = 0;
+    int zj = 0;
+    int S = 0;
+    int rand;
+    int max=0;
+    public void move1(Cells [][] cells,People p) {
+        if (cells[y][x].money == 0) {
+            for (int i = -1; i <= 1; i++) {
+                for (int j = -1; j <= 1; j++) {
+                    if ((x + i >= 0 && x + i <= 9) && (y + j >= 0 && y + j <= 9) && (x + i != p.x && y + j != p.y)) {
+                            if (cells[y + j][x + i].money >= max) {
+                                max=cells[y + j][x + i].money;
+                                zi = i;
+                                zj = j;
+                            }
+
+                    }
+
+                }
+           }
+            this.x += zi;
+            this.y += zj;
+            zi=0;
+            zj=0;
+     }
+    }
+
+    public void move2(Cells [][] cells,People p) {
+        if (cells[y][x].money == 0) {
+            for (int i = -1; i <= 1; i++) {
+                for (int j = -1; j <= 1; j++) {
+                    if ((x + i >= 0 && x + i <= 9) && (y + j >= 0 && y + j <= 9) && (x + i != p.x && y + j != p.y)) {
+                        S++;
+                    }
+                }
+            }
+
+            rand = (int) (Math.random() * S);
+            S = 0;
+            for (int i = -1; i <= 1; i++) {
+                for (int j = -1; j <= 1; j++) {
+                    if ((x + i >= 0 && x + i <= 9) && (y + j >= 0 && y + j <= 9) && (x + i != p.x && y + j != p.y)) {
+                        S++;
+                        if (S == rand + 1) {
+                            zi = i;
+                            zj = j;
+                        }
+                    }
+                }
+            }
+            this.x += zi;
+            this.y += zj;
+            zi=0;
+            zj=0;
+        }
+    }
+
+    public  void getM(Cells c) {
+        this.money += c.money/2;
+        c.money/=2;
+    }
+    public Graphics paint(Graphics g){
+        g.setColor(Color.red);
+        g.fillOval(x * 100 + 35, y * 100 + 35, 30, 30);
+        return g;
+    }
+}
