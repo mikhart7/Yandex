@@ -1,0 +1,23 @@
+import java.awt.*;
+public class Cells {
+    int x;
+    int y;
+     int speed;
+     int money;
+    public Cells(){
+        this.money=(int)(Math.random()*5)+1;
+        this.speed=(int)(Math.random()*3)+1;
+    }
+    public void doM(){
+        if(money<=30) {
+            this.money += this.speed;
+        }
+    }
+    public  Graphics paint(Graphics g){
+        g.setColor(Color.ORANGE);
+        for (int v = 0;v<money/5;v++){
+            g.fillOval(x * 100+5 + 15*(v), y * 100 + 75, 15, 15);
+        }
+         return g;
+    }
+}
