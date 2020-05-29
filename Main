@@ -1,0 +1,121 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+class MyPanel extends JPanel implements ActionListener {
+    private Image img = new ImageIcon("fon.png").getImage();
+    private Timer t = new Timer(700,this);
+    private JFrame frame;
+    MyPanel(JFrame frame) {
+        this.frame =frame;
+        this.setSize(1920, 1080);
+        t.start();
+    }
+
+    Cells [][] cells =  new Cells[10][10];
+    People p [] = new People[10];
+     void create(){
+       if(cells[0][0]==null) {
+           for (int i = 0; i < 10; i++) {
+               for (int j = 0; j < 10; j++) {
+                   cells[i][j] = new Cells();
+                   cells[i][j].x=j;
+                   cells[i][j].y=i;
+                   if(i<=3 && j<=4){
+                       cells[i][j].money=30;
+                       cells[i][j].speed=(int)(Math.random()*8)+1;
+                   }
+               }
+           }
+       }
+       if(p[0]==null) {
+           for (int k = 0; k < p.length; k++) {
+               p[k] = new People();
+           }
+           for (int n = 0; n < 10; n++) {
+               for (int k = 0; k < p.length; k++) {
+                   for (int k2 = 0; k2 < p.length; k2++) {
+                       while (p[k].x == p[k2].x && p[k].y == p[k2].y && k != k2) {
+                           p[k] = new People();
+                       }
+                   }
+               }
+           }
+
+       }
+       }
+
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        g.drawImage(img,1000,0,1920,1000,null);
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                 cells[i][j].paint(g);
+            }
+        }
+        for (int i=0;i<p.length;i++){
+            if(p[i].b) {
+                p[i].getM(cells[p[i].y][p[i].x]);
+                p[i].paint(g);
+            }
+        }
+
+        for(int i = 0;i<=1000;i+=100){
+            g.setColor(Color.CYAN);
+            g.drawLine(i,0,i,1000);
+            g.drawLine(0,i,1000,i);
+        }
+
+    }
+
+    int s = 0;
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        s++;
+        if(s%4==0) {
+            for (int i = 0; i < 10; i++) {
+                for (int j = 0; j < 10; j++) {
+                    cells[j][i].doM();
+                }
+            }
+        }
+
+
+                for (int k = 0;k<p.length;k++){
+                    if(s%3==0 && p[k].b){
+                        p[k].money-=4;
+                     if(p[k].money<0){
+                         p[k].b=false;
+                     }
+                }
+                    for (int k2=0;k2<p.length;k2++) {
+                        if(p[k].b) {
+                            if((int)(Math.random()*10)%3==0) {
+                                p[k].move2(cells, p[k2]);
+                            }
+                            else{
+                                p[k].move1(cells, p[k2]);
+                            }
+                        }
+                    }
+            }
+                repaint();
+
+    }
+}
+
+
+
+public  class Main {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("World simulation");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        MyPanel panel = new MyPanel(frame);
+        panel.create();
+        frame.add(panel);
+        frame.setVisible(true);
+    }
+}
